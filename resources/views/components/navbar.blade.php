@@ -25,6 +25,9 @@
                         <li class="group py-5">
                             <a href="#contact" class="font-base text-dark py-2 mx-8 flex group-hover:text-primary dark:text-white">Contact</a>
                         </li>
+                        <li class="group py-5">
+                            <a href="{{ route('gallery.index') }}" class="font-base text-dark py-2 mx-8 flex group-hover:text-primary dark:text-white nav-link {{ request()->is('gallery') ? 'active' : '' }}">Gallery</a>
+                        </li>
                         <li class="mt-3 flex items-center pl-8 lg:mt-0">
                             <nav class="bg-white dark:bg-gray-900 w-full z-20 top-0 left-0">
                                 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
