@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -97,7 +99,52 @@ class GalleryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // $this->validate($request, [
+        //     'title' => 'required|max:255',
+        //     'description' => 'required',
+        //     'picture' => 'image|nullable|max:1999'
+        // ]);
+        $post = Post::findOrFail($id);
+        // check apakah image is uploaded
+        if ($request->hasFile('picture')){
+            // menghapus image yang lama
+            $path = 'posts_image/'. $post->picture;
+    
+            if (Storage::exists($path)) {
+                Storage::delete($path);
+            }
+
+            // membuat nama file untuk nantinya dimasukkan ke dalam database
+            $filenameWithExt = $request->file('picture')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('picture')->getClientOriginalExtension();
+            $basename = uniqid() . time();
+            $smallFilename = "small_{$basename}.{$extension}";
+            $mediumFilename = "medium_{$basename}.{$extension}";
+            $largeFilename = "large_{$basename}.{$extension}";
+            $filenameSimpan = "{$basename}.{$extension}";
+
+            // ini path yang baru dimana nantinya path ini yang akan disimpan ke database dan juga image ini yang akan dimasukkan ke folder
+            // $path = public_path('storage/posts_image/'.$filenameSimpan);
+            // $photoResized = Imag::make($request->file('picture'));
+            // $photoResized->fit(100,100);
+            // $photoResized->save($path);
+
+            //update post with new image
+            $post->update([
+                'title'         => $request->title,
+                'description'   => $request->description,
+                'picture'       => $filenameSimpan
+            ]);
+        } else {
+            //update post with no image
+            $post->update([
+                'title'         => $request->title,
+                'description'   => $request->description
+            ]);
+        }
+        //redirect to dashboard
+        return redirect()->route('gallery.edit', $post->id)->with(['message' => 'Data Berhasil Diubah!']);
     }
 
     /**
@@ -105,6 +152,14 @@ class GalleryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $gallery = Post::findOrFail($id);
+        $path = 'posts_image/'. $gallery->picture;
+
+        if (Storage::exists($path)) {
+            Storage::delete($path);
+        }
+        $gallery->delete();
+
+        return redirect()->route('gallery.index')->with(['message' => 'Data Berhasil Dihapus!']);
     }
 }
