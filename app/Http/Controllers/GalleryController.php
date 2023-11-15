@@ -129,6 +129,7 @@ class GalleryController extends Controller
             // $photoResized = Image::make($request->file('picture'));
             // $photoResized->fit(100,100);
             // $photoResized->save($path);
+            //ghjhbb
             
 
             // $post = new Post;
