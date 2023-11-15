@@ -114,7 +114,6 @@ class GalleryController extends Controller
                 Storage::delete($path);
             }
 
-            // membuat nama file untuk nantinya dimasukkan ke dalam database
             $filenameWithExt = $request->file('picture')->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('picture')->getClientOriginalExtension();
@@ -123,13 +122,20 @@ class GalleryController extends Controller
             $mediumFilename = "medium_{$basename}.{$extension}";
             $largeFilename = "large_{$basename}.{$extension}";
             $filenameSimpan = "{$basename}.{$extension}";
+            $path = $request->file('picture')->storeAs('posts_image', $filenameSimpan);
 
             // ini path yang baru dimana nantinya path ini yang akan disimpan ke database dan juga image ini yang akan dimasukkan ke folder
             // $path = public_path('storage/posts_image/'.$filenameSimpan);
-            // $photoResized = Imag::make($request->file('picture'));
+            // $photoResized = Image::make($request->file('picture'));
             // $photoResized->fit(100,100);
             // $photoResized->save($path);
+            
 
+            // $post = new Post;
+            // $post->picture = $filenameSimpan;
+            // $post->title = $request->input('title');
+            // $post->description = $request->input('description');
+            // $post->save();
             //update post with new image
             $post->update([
                 'title'         => $request->title,
