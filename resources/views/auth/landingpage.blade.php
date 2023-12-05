@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
+    <link rel="stylesheet" href = "{{asset(/build/assets/app-ff0407ab.css)}}">
+    
 </head>
 <body>
     {{-- Hero Section Start --}}
@@ -68,5 +70,6 @@
         </div>
     </section>
     {{-- About Section End --}}
+    <script src="{{asset(public/build/assets/app-422dbcc3.js)}}"></script>
 </body>
 </html>
