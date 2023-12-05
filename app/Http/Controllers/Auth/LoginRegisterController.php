@@ -56,7 +56,7 @@ class LoginRegisterController extends Controller
             'email' => $request->email
         ];
         
-        dispatch(new SendMailJob($data));
+        // dispatch(new SendMailJob($data));
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
